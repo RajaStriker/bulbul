@@ -1,7 +1,26 @@
 pipeline {
     agent any
 
+    environment {
+        GIT_CREDENTIALS = 'github-credentials-id' // Use your GitHub credentials ID here
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    echo 'Checking out repository...'
+                    checkout([$class: 'GitSCM', 
+                              branches: [[name: '*/main']],  // Adjust branch as necessary
+                              userRemoteConfigs: [[
+                                  url: 'https://github.com/RajaStriker/bulbul.git',
+                                  credentialsId: GIT_CREDENTIALS
+                              ]]
+                    ])
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
@@ -10,7 +29,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Test') {
             steps {
                 script {
