@@ -1,16 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        // Define environment variables here if needed
-    }
-
     stages {
         stage('Build') {
             steps {
                 script {
                     echo 'Building the project...'
-                    // Replace with your actual build commands
                     sh './build.sh'
                 }
             }
@@ -20,7 +15,6 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests...'
-                    // Replace with your actual test commands
                     sh './test.sh'
                 }
             }
@@ -33,7 +27,6 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying to the development environment...'
-                    // Replace with your actual deploy commands for dev
                     sh './deploy.sh dev'
                 }
             }
@@ -58,7 +51,6 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying to the production environment...'
-                    // Replace with your actual deploy commands for prod
                     sh './deploy.sh prod'
                 }
             }
@@ -74,3 +66,4 @@ pipeline {
         }
     }
 }
+
