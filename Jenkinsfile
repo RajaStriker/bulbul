@@ -11,7 +11,7 @@ pipeline {
 
     environment {
         GIT_CREDENTIALS = 'github-credentials-id' // Use your GitHub credentials ID here
-        PATH = "$PATH:/opt/maven:/bin:/usr/bin:/usr/local/bin"
+        PATH = "$PATH:/usr/bin"
     }
 
     stages {
