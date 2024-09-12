@@ -48,6 +48,18 @@ pipeline {
             }
         }
 
+        stage('Approval for Dev') {
+            when {
+                expression { return params.ENVIRONMENT == 'dev' }
+            }
+            steps {
+                script {
+                    echo 'Waiting for manual approval to proceed with deployment to dev...'
+                    input message: 'Approve deployment to the dev environment?', ok: 'Proceed'
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 script {
