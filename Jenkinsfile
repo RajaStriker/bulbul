@@ -1,9 +1,17 @@
 pipeline {
     agent any
 
+    parameters {
+        choice(
+            name: 'ENVIRONMENT', 
+            choices: ['dev', 'prod'], 
+            description: 'Choose the environment to deploy to'
+        )
+    }
+
     environment {
         GIT_CREDENTIALS = 'github-credentials-id' // Use your GitHub credentials ID here
-        PATH = "$PATH:/opt/maven:/bin:/usr/bin:usr/local/bin"
+        PATH = "$PATH:/opt/maven:/bin:/usr/bin:/usr/local/bin"
     }
 
     stages {
@@ -40,38 +48,11 @@ pipeline {
             }
         }
 
-        stage('Deploy to Dev') {
-            when {
-                expression { return env.BRANCH_NAME == 'dev' }
-            }
+        stage('Deploy') {
             steps {
                 script {
-                    echo 'Deploying to the development environment...'
-                    sh './deploy.sh dev'
-                }
-            }
-        }
-
-        stage('Approval') {
-            when {
-                expression { return env.BRANCH_NAME == 'main' }
-            }
-            steps {
-                script {
-                    echo 'Waiting for manual approval to deploy to production...'
-                    input message: 'Approve deployment to production?', ok: 'Deploy'
-                }
-            }
-        }
-
-        stage('Deploy to Prod') {
-            when {
-                expression { return env.BRANCH_NAME == 'main' }
-            }
-            steps {
-                script {
-                    echo 'Deploying to the production environment...'
-                    sh './deploy.sh prod'
+                    echo "Deploying to $params.ENVIRONMENT environment..."
+                    sh "./deploy.sh $params.ENVIRONMENT"
                 }
             }
         }
